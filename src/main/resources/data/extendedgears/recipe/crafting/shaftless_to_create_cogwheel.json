@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {"item": "extendedgears:shaftless_cogwheel"},
+    {"tag": "minecraft:planks"}
+  ],
+  "result": {"id": "create:cogwheel"}
+}

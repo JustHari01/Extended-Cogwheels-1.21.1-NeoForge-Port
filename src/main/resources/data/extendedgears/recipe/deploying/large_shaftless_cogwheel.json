@@ -1,0 +1,10 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {"item": "extendedgears:shaftless_cogwheel"},
+    {"tag": "minecraft:planks"}
+  ],
+  "results": [
+    {"id": "extendedgears:large_shaftless_cogwheel"}
+  ]
+}

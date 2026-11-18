@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {"item": "create:andesite_alloy"},
+    {"tag": "minecraft:planks"}
+  ],
+  "result": {"id": "extendedgears:half_shaft_cogwheel"}
+}

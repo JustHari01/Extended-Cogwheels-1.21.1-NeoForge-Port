@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.rabbitminers.extendedgears.mixin",
+  "plugin": "com.rabbitminers.extendedgears.mixin.ExtendedCogwheelsMixinPlugin",
+  "refmap": "extendedgears.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AccessorBlockEntityType",
+    "MixinAllBlockEntityTypes",
+    "MixinAllBlocks",
+    "MixinCogwheelBlock",
+    "MixinCogwheelBlockItem",
+    "MixinEncasedCogBlock",
+    "MixinSimpleKineticBlockEntity"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

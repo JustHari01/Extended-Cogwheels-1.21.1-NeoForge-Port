@@ -1,0 +1,26 @@
+package com.rabbitminers.extendedgears.cogwheels.legacy;
+
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import com.rabbitminers.extendedgears.base.data.ICogwheelMaterial;
+import com.simibubi.create.AllPartialModels;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+
+@Deprecated
+public interface ICustomCogwheel{
+    public ICogwheelMaterial getMaterial();
+
+    default Direction.AxisDirection getAxisDirection(BlockState state) {
+        return Direction.AxisDirection.POSITIVE;
+    }
+
+    @Nullable
+    default PartialModel getShaftPartialModel() {
+        return AllPartialModels.COGWHEEL_SHAFT;
+    }
+
+    default PartialModel getPartialModelType() {
+        return AllPartialModels.SHAFTLESS_COGWHEEL;
+    }
+}

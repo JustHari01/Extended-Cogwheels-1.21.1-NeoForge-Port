@@ -1,0 +1,8 @@
+{
+  "items": [
+    {"item": "minecraft:iron_ingot"},
+    {"item": "minecraft:iron_block"},
+    {"tag": "c:ingots/iron"},
+    {"tag": "c:plates/iron"}
+  ]
+}

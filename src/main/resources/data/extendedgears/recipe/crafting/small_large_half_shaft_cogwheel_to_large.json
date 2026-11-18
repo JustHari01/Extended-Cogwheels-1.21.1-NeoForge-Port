@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {"item": "extendedgears:half_shaft_cogwheel"},
+    {"tag": "minecraft:planks"}
+  ],
+  "result": {"id": "extendedgears:large_half_shaft_cogwheel"}
+}

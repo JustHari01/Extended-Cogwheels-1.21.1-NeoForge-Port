@@ -1,0 +1,7 @@
+{
+  "items": [
+    {"item": "create:brass_ingot"},
+    {"tag": "c:ingots/brass"},
+    {"tag": "c:plates/brass"}
+  ]
+}

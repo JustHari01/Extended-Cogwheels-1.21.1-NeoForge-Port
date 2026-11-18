@@ -1,0 +1,145 @@
+plugins {
+    id "net.neoforged.moddev" version "2.0.141"
+}
+
+group = "com.rabbitminers"
+version = "${mod_version}"
+base.archivesName = "extended-cogwheels-unofficial"
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+    maven { url = "https://maven.createmod.net" }
+    maven { url = "https://maven.ithundxr.dev/snapshots" }
+}
+
+neoForge {
+    version = neo_version
+
+    runs {
+        client {
+            client()
+            gameDirectory = file("run/client")
+        }
+        server {
+            server()
+            gameDirectory = file("run/server")
+        }
+    }
+
+    mods {
+        extendedgears {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+sourceSets.main.java {
+    exclude "com/rabbitminers/extendedgears/datagen/**"
+    exclude "com/rabbitminers/extendedgears/base/datatypes/ItemPredicate.java"
+    exclude "com/rabbitminers/extendedgears/base/lang/ExtendedCogwheelsLanguageProvider.java"
+    exclude "com/rabbitminers/extendedgears/mixin/AccessorLangMerger.java"
+    exclude "com/rabbitminers/extendedgears/forge/ExtendedCogwheelsImpl.java"
+    exclude "com/rabbitminers/extendedgears/mixin/MixinBracketedKineticBlockEntityInstance.java"
+    exclude "com/rabbitminers/extendedgears/mixin/MixinEncasedCogInstance.java"
+    exclude "com/rabbitminers/extendedgears/mixin/MixinBracketedKineticBlockEntityRenderer.java"
+    exclude "com/rabbitminers/extendedgears/mixin/MixinEncasedCogRenderer.java"
+}
+
+dependencies {
+    annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
+        transitive = false
+    }
+    implementation("net.createmod.catnip:Catnip-NeoForge-${minecraft_version}:${catnip_version}")
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+}
+
+def mixinRefmap = layout.buildDirectory.file("classes/java/main/${mod_id}.refmap.json")
+def mixinReobfMappings = layout.buildDirectory.file("mappings/${mod_id}-mixin-reobf.tsrg")
+def mixinOutMappings = layout.buildDirectory.file("mappings/${mod_id}-mixin-out.tsrg")
+def neoformMappingsDirectory = file("${gradle.gradleUserHomeDir}/caches/neoformruntime/intermediate_results")
+def neoformMappingCandidates = fileTree(neoformMappingsDirectory) {
+    include "mergeMappings*_output.tsrg"
+}
+
+tasks.register("generateMixinMappings") {
+    inputs.files(neoformMappingCandidates)
+    outputs.file(mixinReobfMappings)
+    dependsOn(tasks.named("createMinecraftArtifacts"))
+
+    doLast {
+        def candidates = neoformMappingCandidates.files
+        if (candidates.isEmpty()) {
+            throw new GradleException("NeoForm named-to-obfuscated mappings were not generated.")
+        }
+
+        def input = candidates.max { it.lastModified() }
+        def lines = input.readLines("UTF-8")
+        def obfuscatedToNamed = [:]
+
+        lines.each { line ->
+            if (line.startsWith("tsrg2") || line.startsWith("\t") || line.trim().isEmpty()) return
+            def parts = line.trim().split("\\s+")
+            if (parts.length >= 2) obfuscatedToNamed[parts[0]] = parts[1]
+        }
+
+        def mapDescriptor = { String descriptor ->
+            descriptor.replaceAll(/L([^;]+);/) { full, name ->
+                "L${obfuscatedToNamed.get(name, name)};"
+            }
+        }
+
+        def outputLines = ["tsrg2 searge notch"]
+        lines.each { line ->
+            if (line.startsWith("tsrg2") || line.trim().isEmpty()) return
+
+            if (line.startsWith("\t\t")) return
+            if (line.startsWith("\t")) {
+                def parts = line.trim().split("\\s+")
+                if (parts.length == 2) {
+                    outputLines << "\t${parts[1]} ${parts[0]}"
+                } else if (parts.length >= 3) {
+                    outputLines << "\t${parts[2]} ${mapDescriptor(parts[1])} ${parts[0]}"
+                }
+            } else {
+                def parts = line.trim().split("\\s+")
+                if (parts.length >= 2) outputLines << "${parts[1]} ${parts[0]}"
+            }
+        }
+
+        def output = mixinReobfMappings.get().asFile
+        output.parentFile.mkdirs()
+        output.setText(outputLines.join(System.lineSeparator()), "UTF-8")
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xmaxerrs", "500"]
+    options.compilerArgs += [
+            "-AoutRefMapFile=${mixinRefmap.get().asFile}",
+            "-AoutTsrgFile=${mixinOutMappings.get().asFile}",
+            "-AmappingTypes=tsrg",
+            "-ApluginVersion=0.8",
+            "-AdefaultObfuscationEnv=searge"
+    ]
+    dependsOn(tasks.named("generateMixinMappings"))
+    doFirst {
+        options.compilerArgs.removeAll { it.startsWith("-AreobfTsrgFile=") }
+        options.compilerArgs.add("-AreobfTsrgFile=${mixinReobfMappings.get().asFile}")
+    }
+}
+
+tasks.named("jar", Jar) {
+    from(rootProject.file("LICENSE"))
+    from(rootProject.file("ASSET_LICENSE.md"))
+}

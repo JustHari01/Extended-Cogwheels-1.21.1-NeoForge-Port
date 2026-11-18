@@ -1,0 +1,43 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="extendedgears"
+version="3.0.0"
+displayName="Extended Cogwheels (UNOFFICIAL)"
+authors="Rabbitminers; 1.21.1 NeoForge port by JustHari01"
+description='''An unofficial NeoForge 1.21.1 port of Create: Extended Cogwheels. Adds shaftless and half-shaft cogwheels with configurable material appearances. Requires Create. See the project README for attribution and asset licensing.'''
+logoFile="extendedgears-icon.png"
+credits="Original code by Rabbitminers, licensed under MIT. Upstream restricted art assets are not included."
+
+[[mixins]]
+config="extendedgears.mixins.json"
+
+[[dependencies.extendedgears]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,21.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.extendedgears]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.extendedgears]]
+modId="create"
+type="required"
+versionRange="[6.0.0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.extendedgears]]
+modId="flywheel"
+type="required"
+versionRange="[1.0.0,)"
+ordering="AFTER"
+side="BOTH"

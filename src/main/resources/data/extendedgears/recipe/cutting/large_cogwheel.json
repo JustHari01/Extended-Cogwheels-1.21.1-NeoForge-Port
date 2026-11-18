@@ -1,0 +1,11 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {"item": "create:large_cogwheel"}
+  ],
+  "processing_time": 50,
+  "results": [
+    {"id": "extendedgears:large_shaftless_cogwheel"},
+    {"id": "create:shaft", "chance": 0.2}
+  ]
+}
