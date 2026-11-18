@@ -15,6 +15,10 @@ An unofficial NeoForge 1.21.1 port of Create: Extended Cogwheels by Rabbitminers
 - Create 6.0.10 or a compatible 6.x build
 - Flywheel 1.x
 
+## Runtime test
+
+A dedicated server test with NeoForge 21.1.219 and Create 6.0.10 loaded the mod, reached the server-ready state, saved the isolated test world, and shut down cleanly. Client launch and rendering have not been tested.
+
 ## Attribution and licenses
 
 The ported Java code derives from [Create: Extended Cogwheels](https://www.curseforge.com/minecraft/mc-mods/extended-cogwheels), by Rabbitminers, and is distributed under the MIT License in LICENSE.
