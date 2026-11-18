@@ -11,10 +11,10 @@ import java.util.Set;
 
 @Mixin(BlockEntityType.class)
 public interface AccessorBlockEntityType {
-    @Accessor
+    @Accessor(value = "validBlocks", remap = false)
     Set<Block> getValidBlocks();
 
-    @Accessor
+    @Accessor(value = "validBlocks", remap = false)
     @Final
     @Mutable
     void setValidBlocks(Set<Block> validBlocks);
