@@ -1,5 +1,5 @@
 # Port asset notes
 
-The port does not include the upstream logo, textures, Blockbench models, or translated asset files. The original asset license marks those files as All Rights Reserved.
+The upstream project's logo, textures, Blockbench geometry, promotional art, and original localization files are All Rights Reserved and are not included in this port.
 
-The icon and resource JSON files authored for this port are released under MIT. Their block model parents refer to resources supplied by the separately installed Create dependency; those Create assets are not copied into this project.
+The 512×512 icon, short English labels, blockstate mappings, and item-model wrappers are authored for this NeoForge 1.21.1 port. The state mappings are new multipart selectors for the port's block properties. Item-model wrappers refer to the port's block wrappers, which use model resources supplied by the separately installed Create dependency. These port-authored assets are released under MIT.
